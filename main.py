@@ -14,7 +14,7 @@ def issuerId(key: str) -> int:
     return ISSUER_ID.get(key)
 
 
-def checkLuhn(list_int: list) -> bool:
+def isCheckLuhn(list_int: list) -> bool:
     c_sum = list_int[-1]
     tmp_v = {i: v * 2 for i, v in enumerate(list_int[:-1]) if i == 0 or i % 2 == 0}
     for k, v in tmp_v.items():
