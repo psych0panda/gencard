@@ -1,49 +1,44 @@
 from random import randint
 
-MMI = {
-    'ISO_TC68': 0,
-    'AIRLINES': 1,
-    'AIRLINES_AND_OTHER_INDUSTRY_ASSIGNMENT': 2,
-    'TRAVEL_AND_ENTERTAINMENT': 3,
-    'BANKING_AND_FINANCIAL': 4,
-    'BANKING_AND_FINANCIAL': 5,
-    'MERCHANDISING_AND_BANKING': 6,
-    'PETROLEUM': 7,
-    'TELECOMMUNICATIONS_AND_OTHER_INDUSTRY_ASSIGNMENT': 8,
-    'NATIONAL_ASSIGNMENT': 9,
-}
-
 ISSUER_ID = {
-    'MASTERCARD': randint(222100, 272099),
+    'MASTERCARD': randint(511111, 551111),
     'VISA': randint(411111, 499999)
 }
-
-
-def mmi(industry_id: int = 4) -> int:
-    return industry_id
 
 
 def userId() -> int:
     return randint(1111111111, 9999999999)
 
 
-def issuerId() -> int:
-    return ISSUER_ID.get('VISA')
+def issuerId(key: str) -> int:
+    return ISSUER_ID.get(key)
 
 
-def _translateToList(check_int: int) -> list:
-    list_int = []
-    for i in str(check_int):
-        list_int.append(int(i))
-    return list_int
+def checkLuhn(list_int: list) -> bool:
+    c_sum = list_int[-1]
+    tmp_v = {i: v * 2 for i, v in enumerate(list_int[:-1]) if i == 0 or i % 2 == 0}
+    for k, v in tmp_v.items():
+        if v >= 10:
+            y = str(v)[0]
+            z = str(v)[1]
+            w = int(y) + int(z)
+            tmp_v.update({k: w})
+    for k_, v_ in tmp_v.items():
+        list_int[k_] = v_
+    res = sum(list_int[:-1]) * 9
+    if str(res)[-1] == str(c_sum):
+        return True
 
 
-def checkMod10(list_int: list) -> bool:
-    c_int = list_int[-1]
-    res = list_int.index(3)
-    print(res)
+def gen(bin: str = 'MASTERCARD') -> None:
+    while 1:
+        iid = str(issuerId(bin))
+        uid = str(userId())
+        num = iid + uid
+        l_tmp = [int(i) for i in num]
+        if checkLuhn(l_tmp):
+            print(num)
 
 
 if __name__ == '__main__':
-    l_i = [3, 8, 5, 2, 0, 0, 0, 0, 0, 2, 3, 2, 3, 7]
-    checkMod10(l_i)
+    gen()
