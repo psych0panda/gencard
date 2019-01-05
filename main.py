@@ -36,7 +36,7 @@ def gen(bin: str = 'MASTERCARD') -> None:
         uid = str(userId())
         num = iid + uid
         l_tmp = [int(i) for i in num]
-        if checkLuhn(l_tmp):
+        if isCheckLuhn(l_tmp):
             print(num)
 
 
